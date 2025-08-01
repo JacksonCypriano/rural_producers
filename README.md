@@ -68,8 +68,8 @@ docker-compose --version
    POSTGRES_DB=ruraldb
    POSTGRES_USER=ruraluser
    POSTGRES_PASSWORD=ruraluser
-   SECRET_KEY=sua_chave_secreta
-   DEBUG=True
+   DB_HOST=db
+   DB_PORT=5432
    ```
 
 3. Construa e suba os containers:
