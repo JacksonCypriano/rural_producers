@@ -1,0 +1,687 @@
+openapi: 3.0.3
+info:
+  title: API de Produtores Rurais
+  version: 1.0.0
+  description: API para gerenciamento de produtores rurais, fazendas, safras e culturas.
+servers:
+  - url: http://localhost:8000/api
+paths:
+  /farmers/:
+    get:
+      summary: Lista todos os produtores rurais
+      responses:
+        '200':
+          description: Lista de produtores rurais
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Farmer'
+    post:
+      summary: Cria um novo produtor rural
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmerCreate'
+      responses:
+        '201':
+          description: Produtor rural criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farmer'
+  /farmers/{id}/:
+    get:
+      summary: Obter um produtor rural pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produtor rural encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farmer'
+        '404':
+          description: Não encontrado
+    put:
+      summary: Atualiza um produtor rural completamente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmerCreate'
+      responses:
+        '200':
+          description: Produtor rural atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farmer'
+        '404':
+          description: Não encontrado
+    patch:
+      summary: Atualiza parcialmente um produtor rural
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmerUpdate'
+      responses:
+        '200':
+          description: Produtor rural atualizado parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farmer'
+        '404':
+          description: Não encontrado
+    delete:
+      summary: Remove um produtor rural
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletado com sucesso
+        '404':
+          description: Não encontrado
+
+  /farms/:
+    get:
+      summary: Lista todas as fazendas
+      responses:
+        '200':
+          description: Lista de fazendas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Farm'
+    post:
+      summary: Cria uma nova fazenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmCreate'
+      responses:
+        '201':
+          description: Fazenda criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farm'
+
+  /farms/{id}/:
+    get:
+      summary: Obter uma fazenda pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fazenda encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farm'
+        '404':
+          description: Não encontrado
+    put:
+      summary: Atualiza uma fazenda completamente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmCreate'
+      responses:
+        '200':
+          description: Fazenda atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farm'
+        '404':
+          description: Não encontrado
+    patch:
+      summary: Atualiza parcialmente uma fazenda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FarmUpdate'
+      responses:
+        '200':
+          description: Fazenda atualizada parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Farm'
+        '404':
+          description: Não encontrado
+    delete:
+      summary: Remove uma fazenda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletado com sucesso
+        '404':
+          description: Não encontrado
+
+  /harvests/:
+    get:
+      summary: Lista todas as safras
+      responses:
+        '200':
+          description: Lista de safras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Harvest'
+    post:
+      summary: Cria uma nova safra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HarvestCreate'
+      responses:
+        '201':
+          description: Safra criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Harvest'
+
+  /harvests/{id}/:
+    get:
+      summary: Obter uma safra pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Safra encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Harvest'
+        '404':
+          description: Não encontrado
+    put:
+      summary: Atualiza uma safra completamente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HarvestCreate'
+      responses:
+        '200':
+          description: Safra atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Harvest'
+        '404':
+          description: Não encontrado
+    patch:
+      summary: Atualiza parcialmente uma safra
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HarvestUpdate'
+      responses:
+        '200':
+          description: Safra atualizada parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Harvest'
+        '404':
+          description: Não encontrado
+    delete:
+      summary: Remove uma safra
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletado com sucesso
+        '404':
+          description: Não encontrado
+
+  /crops/:
+    get:
+      summary: Lista todas as culturas
+      responses:
+        '200':
+          description: Lista de culturas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Crop'
+    post:
+      summary: Cria uma nova cultura
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CropCreate'
+      responses:
+        '201':
+          description: Cultura criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crop'
+
+  /crops/{id}/:
+    get:
+      summary: Obter uma cultura pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cultura encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crop'
+        '404':
+          description: Não encontrado
+    put:
+      summary: Atualiza uma cultura completamente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CropCreate'
+      responses:
+        '200':
+          description: Cultura atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crop'
+        '404':
+          description: Não encontrado
+    patch:
+      summary: Atualiza parcialmente uma cultura
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CropUpdate'
+      responses:
+        '200':
+          description: Cultura atualizada parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crop'
+        '404':
+          description: Não encontrado
+    delete:
+      summary: Remove uma cultura
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletado com sucesso
+        '404':
+          description: Não encontrado
+
+  /dashboard/api/dashboard/:
+    get:
+      summary: Dados do dashboard
+      responses:
+        '200':
+          description: Dados agregados para dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_farms:
+                    type: integer
+                    example: 10
+                  total_area:
+                    type: number
+                    format: float
+                    example: 1500.75
+                  farms_by_state:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        state:
+                          type: string
+                          example: "SP"
+                        count:
+                          type: integer
+                          example: 4
+                  crops_by_name:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: "Milho"
+                        count:
+                          type: integer
+                          example: 5
+                  land_use:
+                    type: object
+                    properties:
+                      arable_area:
+                        type: number
+                        format: float
+                        example: 1200.50
+                      vegetation_area:
+                        type: number
+                        format: float
+                        example: 300.25
+components:
+  schemas:
+    Farmer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        document_type:
+          type: string
+          enum: [cpf, cnpj]
+          example: cpf
+        document_number:
+          type: string
+          example: "12345678901"
+        name:
+          type: string
+          example: "João da Silva"
+    FarmerCreate:
+      type: object
+      required:
+        - document_type
+        - document_number
+        - name
+      properties:
+        document_type:
+          type: string
+          enum: [cpf, cnpj]
+          example: cpf
+        document_number:
+          type: string
+          example: "12345678901"
+        name:
+          type: string
+          example: "João da Silva"
+    FarmerUpdate:
+      type: object
+      properties:
+        document_type:
+          type: string
+          enum: [cpf, cnpj]
+        document_number:
+          type: string
+        name:
+          type: string
+
+    Farm:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        farmer:
+          $ref: '#/components/schemas/Farmer'
+        name:
+          type: string
+          example: "Fazenda Boa Vista"
+        city:
+          type: string
+          example: "Campinas"
+        state:
+          type: string
+          example: "SP"
+          maxLength: 2
+        total_area:
+          type: number
+          format: float
+          example: 1200.50
+        arable_area:
+          type: number
+          format: float
+          example: 800.75
+        vegetation_area:
+          type: number
+          format: float
+          example: 399.75
+    FarmCreate:
+      type: object
+      required:
+        - farmer
+        - name
+        - city
+        - state
+        - total_area
+        - arable_area
+        - vegetation_area
+      properties:
+        farmer:
+          type: integer
+          description: ID do produtor rural
+          example: 1
+        name:
+          type: string
+          example: "Fazenda Boa Vista"
+        city:
+          type: string
+          example: "Campinas"
+        state:
+          type: string
+          example: "SP"
+          maxLength: 2
+        total_area:
+          type: number
+          format: float
+          example: 1200.50
+        arable_area:
+          type: number
+          format: float
+          example: 800.75
+        vegetation_area:
+          type: number
+          format: float
+          example: 399.75
+    FarmUpdate:
+      type: object
+      properties:
+        farmer:
+          type: integer
+          description: ID do produtor rural
+        name:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+          maxLength: 2
+        total_area:
+          type: number
+          format: float
+        arable_area:
+          type: number
+          format: float
+        vegetation_area:
+          type: number
+          format: float
+
+    Harvest:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        year:
+          type: integer
+          example: 2024
+          minimum: 1900
+          maximum: 2100
+    HarvestCreate:
+      type: object
+      required:
+        - year
+      properties:
+        year:
+          type: integer
+          example: 2024
+          minimum: 1900
+          maximum: 2100
+    HarvestUpdate:
+      type: object
+      properties:
+        year:
+          type: integer
+          minimum: 1900
+          maximum: 2100
+
+    Crop:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Milho"
+        farm:
+          $ref: '#/components/schemas/Farm'
+        harvest:
+          $ref: '#/components/schemas/Harvest'
+    CropCreate:
+      type: object
+      required:
+        - name
+        - farm
+        - harvest
+      properties:
+        name:
+          type: string
+          example: "Milho"
+        farm:
+          type: integer
+          description: ID da fazenda
+          example: 1
+        harvest:
+          type: integer
+          description: ID da safra
+          example: 1
+    CropUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        farm:
+          type: integer
+        harvest:
+          type: integer

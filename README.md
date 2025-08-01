@@ -176,6 +176,44 @@ O sistema valida e aplica os filtros diretamente no queryset.
 
 ---
 
+# Regras de Validação para Documentos (CPF e CNPJ)
+
+## CPF (Cadastro de Pessoa Física)
+
+- Deve conter **11 dígitos numéricos**.
+- Não deve conter letras, espaços, pontos ou traços — apenas números.
+- Deve ser um CPF válido conforme os dígitos verificadores.
+- Exemplos válidos:
+  - `12345678909`
+  - `11144477735`
+- Exemplos inválidos:
+  - `12345678900` (dígitos verificadores incorretos)
+  - `123.456.789-09` (formatação não aceita)
+  - `1234567890a` (caracteres não numéricos)
+
+## CNPJ (Cadastro Nacional da Pessoa Jurídica)
+
+- Deve conter **14 dígitos numéricos**.
+- Não deve conter letras, espaços, pontos, barras ou traços — apenas números.
+- Deve ser um CNPJ válido conforme os dígitos verificadores.
+- Exemplos válidos:
+  - `12345678000195`
+  - `11444777000161`
+- Exemplos inválidos:
+  - `12345678000100` (dígitos verificadores incorretos)
+  - `12.345.678/0001-95` (formatação não aceita)
+  - `1234567800019a` (caracteres não numéricos)
+
+---
+
+### Observações
+
+- A validação é feita automaticamente usando a biblioteca `validate-docbr`.
+- Envie os documentos **somente com números**, sem formatação.
+- Documentos que não obedecerem essas regras serão rejeitados com erro.
+
+---
+
 ## Logs e Observabilidade
 
 A aplicação possui logging nas views e ações principais:
