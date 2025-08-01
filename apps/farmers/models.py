@@ -5,12 +5,7 @@ from apps.choices import FarmerDocumentTypesChoices
 
 
 class Farmer(models.Model):
-    document_type: str = models.CharField(
-        verbose_name="Tipo de documento",
-        max_length=20,
-        choices=FarmerDocumentTypesChoices,
-        default=FarmerDocumentTypesChoices.CPF
-    )
+    document_type: str = models.CharField(verbose_name="Tipo de documento", max_length=20, choices=FarmerDocumentTypesChoices, default=FarmerDocumentTypesChoices.CPF)
     document_number: str = models.CharField(max_length=20, unique=True)
     name: str = models.CharField(max_length=100)
 

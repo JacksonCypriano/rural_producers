@@ -1,10 +1,18 @@
 from rest_framework import serializers
+from apps.choices import FarmerDocumentTypesChoices
 from .models import Farmer, Farm, Harvest, Crop
 from validate_docbr import CPF, CNPJ
 from datetime import datetime
 
 
 class FarmerSerializer(serializers.ModelSerializer):
+    def validate_document_type(self, value):
+        value_lower = value.lower()
+        valid_choices = [choice.value for choice in FarmerDocumentTypesChoices]
+        if value_lower not in valid_choices:
+            raise serializers.ValidationError(f"Tipo de documento inválido. Escolha entre {valid_choices}.")
+        return value_lower
+
     def validate_document_number(self, value: str) -> str:
         document_type = self.initial_data.get("document_type")
         validator = CPF() if document_type == "CPF" else CNPJ()
