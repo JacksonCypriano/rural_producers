@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Arquivo convertido para LF
 set -e
 
 host="$1"
