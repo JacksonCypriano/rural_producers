@@ -262,12 +262,12 @@ Abaixo estão listados os principais endpoints RESTful disponíveis:
 
 | Recurso        | Endpoint               | Descrição                                |
 |----------------|------------------------|--------------------------------------------|
-| 👤 Farmers     | `/api/farmers/`        | CRUD de produtores rurais                  |
-| 🌾 Farms       | `/api/farms/`          | CRUD de fazendas                           |
-| 🌱 Crops       | `/api/crops/`          | CRUD de culturas                           |
-| 🌽 Harvests    | `/api/harvests/`       | CRUD de safras                             |
-| 📊 Dashboard   | `/api/dashboard/`      | API com dados agregados para visualização  |
-| 📈 Dashboard   | `/dashboard/`          | Dashboard com gráficos via frontend        |
+| Farmers     | `/api/farmers/`        | CRUD de produtores rurais                  |
+| Farms       | `/api/farms/`          | CRUD de fazendas                           |
+| Crops       | `/api/crops/`          | CRUD de culturas                           |
+| Harvests    | `/api/harvests/`       | CRUD de safras                             |
+| Dashboard   | `/api/dashboard/`      | API com dados agregados para visualização  |
+| Dashboard   | `/dashboard/`          | Dashboard com gráficos via frontend        |
 
 Os endpoints suportam operações padrão (GET, POST, PUT, PATCH, DELETE) conforme o ViewSet correspondente.
 
