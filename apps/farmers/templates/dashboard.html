@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farmers Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Farmers Dashboard</h1>
+
+    <p>Total de Fazendas: {{ total_farms }}</p>
+    <p>Área Total (ha): {{ total_area }}</p>
+
+    <h2>Uso do Solo</h2>
+    <canvas id="landUseChart" width="400" height="200"></canvas>
+
+    <h2>Fazendas por Estado</h2>
+    <canvas id="stateChart" width="400" height="200"></canvas>
+
+    <h2>Culturas Plantadas</h2>
+    <canvas id="cropChart" width="400" height="200"></canvas>
+
+    <script>
+        const landUseData = {
+            labels: ['Área Agricultável', 'Área de Vegetação'],
+            datasets: [{
+                data: [{{ land_use.arable_area|default:0 }}, {{ land_use.vegetation_area|default:0 }}],
+                backgroundColor: ['#4caf50', '#8bc34a']
+            }]
+        };
+
+
+        new Chart(document.getElementById('landUseChart'), {
+            type: 'pie',
+            data: landUseData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Uso do Solo (hectares)'
+                    }
+                }
+            }
+        });
+
+        const stateLabels = [{% for item in farms_by_state %}'{{ item.state }}',{% endfor %}];
+        const stateCounts = [{% for item in farms_by_state %}{{ item.count }},{% endfor %}];
+
+        new Chart(document.getElementById('stateChart'), {
+            type: 'pie',
+            data: {
+                labels: stateLabels,
+                datasets: [{
+                    data: stateCounts,
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Fazendas por Estado'
+                    }
+                }
+            }
+        });
+
+        const cropLabels = [{% for item in crops_by_name %}'{{ item.name }}',{% endfor %}];
+        const cropCounts = [{% for item in crops_by_name %}{{ item.count }},{% endfor %}];
+
+        new Chart(document.getElementById('cropChart'), {
+            type: 'pie',
+            data: {
+                labels: cropLabels,
+                datasets: [{
+                    data: cropCounts,
+                    backgroundColor: ['#ffa726', '#ab47bc', '#29b6f6', '#66bb6a', '#ef5350'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Culturas Plantadas'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
