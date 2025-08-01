@@ -1,151 +1,99 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard de Produtores Rurais</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <style>
-    /* Reset básico */
-    * {
-      box-sizing: border-box;
-    }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 1rem;
-    }
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-    .stat-card {
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1.5rem 2rem;
-      border-radius: 8px;
-      min-width: 200px;
-      text-align: center;
-    }
-    .stat-card p {
-      font-size: 1.2rem;
-      margin: 0.3rem 0;
-      font-weight: 600;
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
     }
 
-    .charts-container {
-      display: flex;
-      justify-content: space-around;
-      gap: 3rem;
-      flex-wrap: wrap;
+    h2 {
+      margin-bottom: 10px;
     }
-    .chart-card {
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1.5rem 2rem;
-      border-radius: 8px;
-      flex: 1 1 300px;
-      max-width: 400px;
+
+    .chart-container {
+      width: 45%;
+      margin: 20px;
+      display: inline-block;
+      vertical-align: top;
     }
-    .chart-card h2 {
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-align: center;
-      color: #34495e;
-    }
+
     canvas {
-      display: block;
-      margin: 0 auto;
       max-width: 100%;
-      height: auto !important;
     }
 
-    @media(max-width: 600px) {
-      .stats, .charts-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .stat-card, .chart-card {
-        max-width: 90%;
+    @media (max-width: 768px) {
+      .chart-container {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-
   <h1>Dashboard de Produtores Rurais</h1>
 
-  <section class="stats" aria-label="Estatísticas principais">
-    <div class="stat-card" role="region" aria-labelledby="totalFarmsLabel">
-      <p id="totalFarmsLabel">Total de Fazendas</p>
-      <p>{{ total_farms }}</p>
-    </div>
-    <div class="stat-card" role="region" aria-labelledby="totalAreaLabel">
-      <p id="totalAreaLabel">Área Total (ha)</p>
-      <p>{{ total_area }}</p>
-    </div>
-  </section>
+  <div class="chart-container">
+    <h2>Distribuição por Tipo de Uso da Terra</h2>
+    <canvas id="landUseChart"></canvas>
+  </div>
 
-  <section class="charts-container">
-    <article class="chart-card" role="region" aria-labelledby="landUseChartLabel">
-      <h2 id="landUseChartLabel">Uso do Solo (hectares)</h2>
-      <canvas id="landUseChart" aria-describedby="landUseDesc"></canvas>
-      <p id="landUseDesc" class="visually-hidden">
-        Gráfico de pizza mostrando a proporção entre área agricultável e área de vegetação.
-      </p>
-    </article>
+  <div class="chart-container">
+    <h2>Quantidade de Fazendas por Estado</h2>
+    <canvas id="stateChart"></canvas>
+  </div>
 
-    <article class="chart-card" role="region" aria-labelledby="stateChartLabel">
-      <h2 id="stateChartLabel">Fazendas por Estado</h2>
-      <canvas id="stateChart" aria-describedby="stateDesc"></canvas>
-      <p id="stateDesc" class="visually-hidden">
-        Gráfico de pizza mostrando a quantidade de fazendas por estado.
-      </p>
-    </article>
-
-    <article class="chart-card" role="region" aria-labelledby="cropChartLabel">
-      <h2 id="cropChartLabel">Culturas Plantadas</h2>
-      <canvas id="cropChart" aria-describedby="cropDesc"></canvas>
-      <p id="cropDesc" class="visually-hidden">
-        Gráfico de pizza mostrando as culturas plantadas e suas quantidades.
-      </p>
-    </article>
-  </section>
+  <div class="chart-container">
+    <h2>Distribuição de Culturas Plantadas</h2>
+    <canvas id="cropChart"></canvas>
+  </div>
 
   <script>
     const landUseData = {
-      labels: ['Área Agricultável', 'Área de Vegetação'],
+      labels: ['Agrícola', 'Pasto', 'Reserva Legal', 'Outros'],
       datasets: [{
-        data: [{{ land_use.arable_area|default:0 }}, {{ land_use.vegetation_area|default:0 }}],
-        backgroundColor: ['#4caf50', '#8bc34a'],
-        hoverOffset: 20
+        data: [120, 90, 30, 10],
+        backgroundColor: ['#4caf50', '#ff9800', '#2196f3', '#9e9e9e'],
+        hoverOffset: 10
       }]
+    };
+
+    const stateLabels = ['SP', 'MG', 'PR', 'RS', 'MT'];
+    const stateCounts = [50, 40, 30, 20, 10];
+
+    const cropLabels = ['Milho', 'Soja', 'Cana-de-açúcar', 'Café', 'Algodão'];
+    const cropCounts = [60, 50, 30, 25, 15];
+
+    const pieOptions = {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        datalabels: {
+          color: '#fff',
+          formatter: (value, context) => {
+            const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${value} (${percentage}%)`;
+          },
+          font: {
+            weight: 'bold',
+            size: 14
+          }
+        }
+      }
     };
 
     new Chart(document.getElementById('landUseChart'), {
       type: 'pie',
       data: landUseData,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' },
-          title: { display: false }
-        }
-      }
+      options: pieOptions,
+      plugins: [ChartDataLabels]
     });
-
-    const stateLabels = [{% for item in farms_by_state %}'{{ item.state }}',{% endfor %}];
-    const stateCounts = [{% for item in farms_by_state %}{{ item.count }},{% endfor %}];
 
     new Chart(document.getElementById('stateChart'), {
       type: 'pie',
@@ -153,24 +101,13 @@
         labels: stateLabels,
         datasets: [{
           data: stateCounts,
-          backgroundColor: [
-            '#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff',
-            '#f44336', '#2196f3', '#ffc107', '#009688', '#673ab7'
-          ],
-          hoverOffset: 20
+          backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff'],
+          hoverOffset: 10
         }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' },
-          title: { display: false }
-        }
-      }
+      options: pieOptions,
+      plugins: [ChartDataLabels]
     });
-
-    const cropLabels = [{% for item in crops_by_name %}'{{ item.name }}',{% endfor %}];
-    const cropCounts = [{% for item in crops_by_name %}{{ item.count }},{% endfor %}];
 
     new Chart(document.getElementById('cropChart'), {
       type: 'pie',
@@ -178,33 +115,13 @@
         labels: cropLabels,
         datasets: [{
           data: cropCounts,
-          backgroundColor: [
-            '#ffa726', '#ab47bc', '#29b6f6', '#66bb6a', '#ef5350',
-            '#fb8c00', '#8e24aa', '#0288d1', '#43a047', '#e53935'
-          ],
-          hoverOffset: 20
+          backgroundColor: ['#8bc34a', '#ffeb3b', '#f44336', '#795548', '#03a9f4'],
+          hoverOffset: 10
         }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' },
-          title: { display: false }
-        }
-      }
+      options: pieOptions,
+      plugins: [ChartDataLabels]
     });
   </script>
-
-  <style>
-    /* Ajuda acessibilidade para esconder texto, mas manter no DOM */
-    .visually-hidden {
-      position: absolute !important;
-      height: 1px; width: 1px;
-      overflow: hidden;
-      clip: rect(1px,1px,1px,1px);
-      white-space: nowrap;
-    }
-  </style>
-
 </body>
 </html>
