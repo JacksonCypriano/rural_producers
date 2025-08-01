@@ -148,5 +148,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'farmers': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
