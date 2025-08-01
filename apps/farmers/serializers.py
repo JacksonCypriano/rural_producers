@@ -6,6 +6,12 @@ from datetime import datetime
 
 
 class FarmerSerializer(serializers.ModelSerializer):
+    document_type = serializers.CharField()
+
+    class Meta:
+        model = Farmer
+        fields = '__all__'
+
     def validate_document_type(self, value):
         value_lower = value.lower()
         valid_choices = [choice.value for choice in FarmerDocumentTypesChoices]
@@ -24,10 +30,6 @@ class FarmerSerializer(serializers.ModelSerializer):
         if not value.strip():
             raise serializers.ValidationError("O nome não pode estar vazio.")
         return value
-
-    class Meta:
-        model = Farmer
-        fields = '__all__'
 
 
 class FarmSerializer(serializers.ModelSerializer):
