@@ -140,7 +140,7 @@ docker-compose --version
 ## Dashboard
 
 ### TemplateView
-- URL: `/dashboard/`
+- URL: `/api/dashboard/`
 - Exibe:
   - Total de fazendas
   - Total de hectares
@@ -149,7 +149,7 @@ docker-compose --version
   - Uso do solo (área agricultável e vegetação)
 
 ### APIView
-- URL: `/api/dashboard/`
+- URL: `/api/api/dashboard/`
 - Retorna os mesmos dados em JSON
 
 ---
